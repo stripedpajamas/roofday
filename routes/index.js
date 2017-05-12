@@ -78,6 +78,9 @@ router.get('/', function(req, res, next) {
   let clouds = 0;
 
   getWeather('zip=29707').then((body) => {
+    if(body.cod !== 200) {
+      return Promise.reject(new Error(body.message));
+    }
     tmp = (9/5) * (body.main.temp - 273) + 32;
     precip = body.precipitation ? body.precipitation.value : 0;
     wind = body.wind.speed;
@@ -92,6 +95,9 @@ router.get('/', function(req, res, next) {
 
     const [roofday, metric] = calculateRoof(tmp, precip, wind, time.UV_VALUE);
     res.render('index', { title: roofday ? 'YES' : 'NO', tmp, precip, wind, uv: time.UV_VALUE, clouds, metric });
+  }).catch((err) => {
+    console.error(err);
+    res.render('index', { title: 'ERR', tmp: 0, precip: 0, wind: 0, uv: 0, clouds: 0, metric: 0});
   });
 });
 
