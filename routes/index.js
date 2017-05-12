@@ -39,7 +39,7 @@ const calculateRoof = (temp, precip, wind, uv) => {
   const tmpWeight = tempWeights[Math.floor(temp)] || 0;
 
   // roofday is temperature weight times wind minus UV
-  const windWeight = wind > 20 ? 0 : wind * -1;
+  const windWeight = wind > 20 ? 0 : wind * -0.7;
   if (windWeight === 0) return [false, 0];
 
   // UV Weight is 1.5 * the UV but it's bad so we weight it negatively
