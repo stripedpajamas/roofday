@@ -90,8 +90,8 @@ router.get('/', function(req, res, next) {
       return datum.DATE_TIME.includes(now);
     });
 
-    const [roofday, metric] = calculateRoof(tmp, precip, wind, time.UV_VALUE) ? 'YES' : 'NO';
-    res.render('index', { title: roofday, tmp, precip, wind, uv: time.UV_VALUE, clouds, metric });
+    const [roofday, metric] = calculateRoof(tmp, precip, wind, time.UV_VALUE);
+    res.render('index', { title: roofday ? 'YES' : 'NO', tmp, precip, wind, uv: time.UV_VALUE, clouds, metric });
   });
 });
 
