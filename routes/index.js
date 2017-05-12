@@ -33,20 +33,20 @@ const tempWeights = {
 
 const calculateRoof = (temp, precip, wind, uv) => {
   // Rain change over 35% is a no go
-  if (precip >= 0.35) return false;
+  if (precip >= 0.35) return [false, 0];
 
   // Get the current weight of the temperature
   const tmpWeight = tempWeights[Math.floor(temp)] || 0;
 
   // roofday is temperature weight times wind minus UV
   const windWeight = wind > 20 ? 0 : wind * -1;
-  if (windWeight === 0) return false;
+  if (windWeight === 0) return [false, 0];
 
   // UV Weight is 1.5 * the UV but it's bad so we weight it negatively
   const uvWeight = uv * -1.5;
   const roofday = tmpWeight + (windWeight - uvWeight);
 
-  return roofday > 9.5;
+  return [roofday > 9.5, roofday];
 };
 
 const getWeather = (location) => {
@@ -90,8 +90,8 @@ router.get('/', function(req, res, next) {
       return datum.DATE_TIME.includes(now);
     });
 
-    const roofday = calculateRoof(tmp, precip, wind, time.UV_VALUE) ? 'YES' : 'NO';
-    res.render('index', { title: roofday, tmp, precip, wind, uv: time.UV_VALUE, clouds });
+    const [roofday, metric] = calculateRoof(tmp, precip, wind, time.UV_VALUE) ? 'YES' : 'NO';
+    res.render('index', { title: roofday, tmp, precip, wind, uv: time.UV_VALUE, clouds, metric });
   });
 });
 
