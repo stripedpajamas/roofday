@@ -1,5 +1,9 @@
 extends layout
 
 block content
-  h1= title
-
+  h1 Roof time? #{title}
+  h1 Temperature: #{Math.floor(tmp)}
+  h1 Cloud cover #{clouds}%
+  h1 Precipitation: #{precip}%
+  h1 Wind: #{wind}
+  h1 UV Index #{uv}
