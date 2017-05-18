@@ -59,8 +59,9 @@ const getWeather = (location) => {
   });
 };
 
-const getUV = (lat, lon) => {
-  const url = `https://iaspub.epa.gov/enviro/efservice/getEnvirofactsUVHOURLY/ZIP/28277/JSON`;
+const getUV = () => {
+  // Use coordinates from Charlotte since not available for Fort Mills
+  const url = `http://api.openweathermap.org/v3/uvi/35.2,-80.8/current.json?appid=${process.env.WEATHER_KEY}`;
 
   return new Promise((resolve, reject) => {
     request(url, function (err, response, body) {
@@ -86,15 +87,11 @@ router.get('/', function(req, res, next) {
     wind = body.wind.speed;
     clouds = body.clouds.all;
 
-    return getUV(body.coord.lat, body.coord.lon);
+    return getUV();
   }).then((body) => {
-    const now = moment().format('hh A');
-    const time = body.find((datum) => {
-      return datum.DATE_TIME.includes(now);
-    });
-
-    const [roofday, metric] = calculateRoof(tmp, precip, wind, time.UV_VALUE);
-    res.render('index', { title: roofday ? 'YES' : 'NO', tmp, precip, wind, uv: time.UV_VALUE, clouds, metric });
+    let uv = body.data;
+    const [roofday, metric] = calculateRoof(tmp, precip, wind, uv);
+    res.render('index', { title: roofday ? 'YES' : 'NO', tmp, precip, wind, uv: uv, clouds, metric });
   }).catch((err) => {
     console.error(err);
     res.render('index', { title: 'ERR', tmp: 0, precip: 0, wind: 0, uv: 0, clouds: 0, metric: 0});
