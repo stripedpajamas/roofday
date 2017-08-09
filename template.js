@@ -24,3 +24,21 @@ exports.main = (context) => {
 </html>
 `;
 }
+
+exports.error = (context) => {
+  return `
+<html>
+  <head>
+    <title>${context.title}</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <div class="main-content" style="background: linear-gradient(#29CCFF, #C2D9E8 1%)">
+      <div class="roof-time">
+        <h1>Error checking roof :(</h1>
+      </div>
+    </div>
+  </body>
+</html>
+  `
+};

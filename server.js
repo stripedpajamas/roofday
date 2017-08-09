@@ -58,6 +58,10 @@ const home = (req, res) => {
 
     $('body').html(templates.main(weatherData.data));
     return res.end(dom.serialize());
+  })
+  .catch(() => {
+    $('body').html(templates.error({ title: 'Sad' }));
+    return res.end(dom.serialize());
   });
 };
 
