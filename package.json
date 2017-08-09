@@ -6,7 +6,8 @@
     "start": "node server.js"
   },
   "engines": {
-    "node": "6.11.1"
+    "node": "6.11.x",
+    "npm": "3.10.x"
   },
   "dependencies": {
     "jquery": "^3.2.1",
