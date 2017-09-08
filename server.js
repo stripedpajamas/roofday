@@ -1,7 +1,7 @@
-const yt = require('yttrium-server');
+const Y = require('yttrium-server');
 const routes = require('./routes');
 
-const { $, server, router } = yt;
+const { $, server, router } = Y();
 
 // load routes into Yttrium router
 routes($);
@@ -14,4 +14,4 @@ $(server).on('listening', function(e) {
   console.log('Server is listening on port:', e.target.address().port);
 });
 
-$.listen(server, process.env.PORT || 8000);
+$(server).listen(process.env.PORT || 8000);

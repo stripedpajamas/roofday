@@ -21,7 +21,7 @@ module.exports = ($) => {
     });
 
   // css route handler
-  $.route('style\.css')
+  $.route('style\\.css')
     .on('route', (e, req, res) => {
       e.stopPropagation();
       res.writeHead(200, {
